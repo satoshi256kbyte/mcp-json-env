@@ -11,13 +11,10 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "GitHub.copilot",
-                "GitHub.copilot-chat",
                 "ms-python.python",
                 "ms-python.vscode-pylance",
                 "charliermarsh.ruff",
                 "yzhang.markdown-all-in-one",
-                "GitHub.vscode-pull-request-github",
                 "eamodio.gitlens",
                 "bierner.markdown-mermaid"
             ],
@@ -32,25 +29,24 @@
             }
         }
     },
-    "postCreateCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && yes | bash -c \"$(curl -fsSL https://cli.kiro.dev/install)\" && curl -fsSL https://claude.ai/install.sh | bash && uv sync",
+    "postCreateCommand": "git config --global --add safe.directory /workspaces/mcp-json-env && curl -LsSf https://astral.sh/uv/install.sh | sh && yes | bash -c \"$(curl -fsSL https://cli.kiro.dev/install)\" && curl -fsSL https://claude.ai/install.sh | bash && sudo chown -R vscode:vscode /home/vscode/.config/gh && gh auth setup-git && uv sync",
     "remoteEnv": {
         "AWS_REGION": "ap-northeast-1",
         "HOME": "/home/vscode",
-        "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}",
-        "GITHUB_TOKEN": "",
-        "GIT_CONFIG_COUNT": "1",
-        "GIT_CONFIG_KEY_0": "credential.helper",
-        "GIT_CONFIG_VALUE_0": ""
+        "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}"
     },
     "mounts": [
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/home/vscode/.claude,type=bind,consistency=cached",
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude.json,target=/home/vscode/.claude.json,type=bind,consistency=cached",
-        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+        "source=gh-config,target=/home/vscode/.config/gh,type=volume"
     ],
     "initializeCommand": "touch ${localEnv:HOME}${localEnv:USERPROFILE}/.claude.json .devcontainer/.env.secrets",
     "runArgs": [
         "--env-file",
         ".devcontainer/.env.secrets"
-    ]
+    ],
+    "postStartCommand": "git config --global --add safe.directory /workspaces/mcp-json-env",
+    "containerEnv": {}
 }

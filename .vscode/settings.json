@@ -1,4 +1,9 @@
 {
+    "remote.extensionKind": {
+        "GitHub.vscode-pull-request-github": ["ui"],
+        "GitHub.copilot": ["ui"],
+        "GitHub.copilot-chat": ["ui"]
+    },
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features",
         "editor.formatOnSave": true

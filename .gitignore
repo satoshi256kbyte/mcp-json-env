@@ -1,5 +1,6 @@
 .venv/
 .python-version
 .devcontainer/.env.secrets
+.env.local
 .DS_Store
 .claude/settings.local.json
