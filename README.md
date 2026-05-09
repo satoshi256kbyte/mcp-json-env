@@ -75,6 +75,20 @@ kiro-cli login --use-device-flow
 
 Python パッケージは必要に応じて `uv add ...` / `uv sync` で管理します。
 
+## トラブルシューティング
+
+### DevContainer 起動後に Copilot Chat が使えない（"No delegate found that can handle the connection"）
+
+VS Code の Copilot Chat は、VS Code 内蔵の GitHub 認証プロバイダ（OAuth フロー）を使用して接続します。コンテナ環境に `GITHUB_TOKEN` 環境変数が設定されていると、この認証フローが妨害され、上記エラーが発生します。
+
+**対処方法:**
+
+1. `.devcontainer/.env.secrets` に `GITHUB_TOKEN` を **設定しないでください**。GitHub MCP サーバー用のトークンには `GITHUB_PERSONAL_ACCESS_TOKEN` を使用してください。
+2. VS Code のホスト側で GitHub アカウントにサインインしていることを確認してください（左下のアカウントアイコン → GitHub でサインイン）。
+3. DevContainer を **Rebuild** してください（コマンドパレット → `Dev Containers: Rebuild Container`）。
+
+> **補足:** このテンプレートでは MCP サーバーの認証に `GITHUB_PERSONAL_ACCESS_TOKEN` を使用しています。これは VS Code の内蔵認証と競合しない名前を意図的に選んでいます。
+
 ## ポイント
 
 - API キーは `mcp.json` に直接書かず、環境変数参照で扱います
