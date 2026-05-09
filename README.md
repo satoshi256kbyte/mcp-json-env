@@ -66,6 +66,17 @@ VS Code で **Reopen in Container**（コマンドパレット → `Dev Containe
 
 Python パッケージは必要に応じて `uv add ...` / `uv sync` で管理します。
 
+## AWS 認証
+
+MCP サーバー経由で AWS を操作するには、事前に AWS への認証を済ませておく必要があります。
+devcontainer 内で以下のコマンドを実行し、AWS にログインしてください。
+
+```bash
+aws login
+```
+
+> **補足:** AWS IAM Identity Center (旧 AWS SSO) を利用している場合は `aws sso login --profile <プロファイル名>` を使用してください。プロファイルの設定は `aws configure sso` で行えます。
+
 ## ポイント
 
 - API キーは `mcp.json` に直接書かず、環境変数参照で扱います
