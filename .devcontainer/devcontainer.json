@@ -32,12 +32,12 @@
             }
         }
     },
-    "postCreateCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && yes | bash -c \"$(curl -fsSL https://cli.kiro.dev/install)\" && curl -fsSL https://claude.ai/install.sh | bash && uv sync",
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
     "remoteEnv": {
         "AWS_REGION": "ap-northeast-1",
         "HOME": "/home/vscode",
         "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}",
-        "GITHUB_TOKEN": "",
+        "GITHUB_TOKEN": null,
         "GIT_CONFIG_COUNT": "1",
         "GIT_CONFIG_KEY_0": "credential.helper",
         "GIT_CONFIG_VALUE_0": ""
