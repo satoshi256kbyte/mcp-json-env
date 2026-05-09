@@ -10,5 +10,5 @@
         "--env-file",
         "${localWorkspaceFolder}/.devcontainer/.env"
     ],
-    "postCreateCommand": "bash -lc 'asdf install && uv venv --python \"$(asdf which python)\"' && git config --global user.name \"${GIT_USER_NAME}\" && git config --global user.email \"${GIT_USER_EMAIL}\""
+    "postCreateCommand": "bash -lc 'asdf install && uv venv --python \"$(asdf which python)\"'; git config --global user.name \"${GIT_USER_NAME}\" && git config --global user.email \"${GIT_USER_EMAIL}\""
 }
