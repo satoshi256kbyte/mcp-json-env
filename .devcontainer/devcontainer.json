@@ -36,8 +36,7 @@
     "remoteEnv": {
         "AWS_REGION": "ap-northeast-1",
         "HOME": "/home/vscode",
-        "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}",
-        "GITHUB_TOKEN": "${containerEnv:GITHUB_PERSONAL_ACCESS_TOKEN}"
+        "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}"
     },
     "mounts": [
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
