@@ -19,6 +19,7 @@ RUN apt-get update \
         libsqlite3-dev \
         libssl-dev \
         tk-dev \
+        unzip \
         xz-utils \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
@@ -26,6 +27,11 @@ RUN apt-get update \
     && chown -R "${USERNAME}:${USERNAME}" "${ASDF_DIR}" \
     && su "${USERNAME}" -c "curl -LsSf https://astral.sh/uv/install.sh | sh" \
     && su "${USERNAME}" -c "bash -lc '. ${ASDF_DIR}/asdf.sh && asdf plugin add python https://github.com/danhper/asdf-python.git'"
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o /tmp/awscliv2.zip \
+    && unzip -q /tmp/awscliv2.zip -d /tmp \
+    && /tmp/aws/install \
+    && rm -rf /tmp/awscliv2.zip /tmp/aws
 
 RUN echo '. /usr/local/share/asdf/asdf.sh' >> "/home/${USERNAME}/.bashrc" \
     && echo 'export PATH="/usr/local/share/asdf/bin:/usr/local/share/asdf/shims:$HOME/.local/bin:$PATH"' >> "/home/${USERNAME}/.bashrc"
