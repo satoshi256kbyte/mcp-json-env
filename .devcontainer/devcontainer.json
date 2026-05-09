@@ -3,9 +3,9 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "containerEnv": {
-    "MCP_SERVER_URL": "${localEnv:MCP_SERVER_URL}",
-    "MCP_SERVER_API_KEY": "${localEnv:MCP_SERVER_API_KEY}"
-  },
+  "runArgs": [
+    "--env-file",
+    "${localWorkspaceFolder}/.devcontainer/.env"
+  ],
   "postCreateCommand": "bash -lc 'asdf install && uv venv --python \"$(asdf which python)\"'"
 }
