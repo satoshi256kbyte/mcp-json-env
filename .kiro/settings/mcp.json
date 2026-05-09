@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "template-remote": {
+      "type": "http",
+      "url": "${MCP_SERVER_URL}",
+      "headers": {
+        "Authorization": "Bearer ${MCP_SERVER_API_KEY}"
+      },
+      "tools": [
+        "*"
+      ]
+    }
+  }
+}
