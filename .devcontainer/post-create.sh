@@ -15,6 +15,6 @@ uv sync
 
 # Configure gh CLI auth from GITHUB_PERSONAL_ACCESS_TOKEN if available
 if [ -n "$GITHUB_PERSONAL_ACCESS_TOKEN" ]; then
-    echo "$GITHUB_PERSONAL_ACCESS_TOKEN" | gh auth login --with-token
+    gh auth login --with-token <<< "$GITHUB_PERSONAL_ACCESS_TOKEN"
     echo "gh auth: configured from GITHUB_PERSONAL_ACCESS_TOKEN"
 fi
