@@ -33,7 +33,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o /tmp
     && /tmp/aws/install \
     && rm -rf /tmp/awscliv2.zip /tmp/aws
 
-RUN su "${USERNAME}" -c "curl -fsSL https://cli.kiro.dev/install | bash"
+RUN su "${USERNAME}" -c "curl -fsSL https://cli.kiro.dev/install | yes | bash"
 
 RUN echo '. /usr/local/share/asdf/asdf.sh' >> "/home/${USERNAME}/.bashrc" \
     && echo 'export PATH="/usr/local/share/asdf/bin:/usr/local/share/asdf/shims:$HOME/.local/bin:$PATH"' >> "/home/${USERNAME}/.bashrc"

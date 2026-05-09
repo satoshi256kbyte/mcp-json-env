@@ -62,7 +62,17 @@ VS Code で **Reopen in Container**（コマンドパレット → `Dev Containe
 - `asdf` 経由で Python 3.13 をインストール
 - `uv venv` で仮想環境を作成
 
-### . Python パッケージの管理
+### 4. Kiro CLI の認証
+
+devcontainer 内にはブラウザがないため、デバイスフローを使って認証します。
+
+```bash
+kiro-cli login --use-device-flow
+```
+
+表示される URL をホスト側のブラウザで開き、認証コードを入力してください。
+
+### 5. Python パッケージの管理
 
 Python パッケージは必要に応じて `uv add ...` / `uv sync` で管理します。
 
