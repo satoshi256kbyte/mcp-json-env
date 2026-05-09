@@ -61,6 +61,7 @@ VS Code で **Reopen in Container**（コマンドパレット → `Dev Containe
 - features で AWS CLI / GitHub CLI / Docker-in-Docker をインストール
 - `postCreateCommand` で `uv` / Kiro CLI / Claude Code をインストール
 - `uv sync` で仮想環境（`.venv`）を作成し依存をインストール
+- `GITHUB_PERSONAL_ACCESS_TOKEN` が設定されている場合、`gh` CLI の認証を自動設定
 
 ### 4. Kiro CLI の認証
 
@@ -98,25 +99,31 @@ aws login
 - `devcontainer.json` の `remoteEnv` で Git の環境変数ベース設定（`GIT_CONFIG_COUNT` / `GIT_CONFIG_KEY_0` / `GIT_CONFIG_VALUE_0`）を使い、`credential.helper` を空に上書きしています
 - これによりホストの `credential.helper` が無効化され、VS Code の `GIT_ASKPASS` によるクレデンシャル転送が正常に動作します
 
-### DevContainer 起動後に Copilot Chat が使えない（"No delegate found that can handle the connection"）
-
-VS Code の Copilot Chat は、VS Code 内蔵の GitHub 認証プロバイダ（OAuth フロー）を使用して接続します。コンテナ環境に `GITHUB_TOKEN` 環境変数が存在すると、VS Code の OAuth 認証フローと競合し、上記エラーが発生します。
+### DevContainer 起動後に GitHub に繋がらない / `gh auth login` が効かない
 
 **主な原因:**
 
-- `ghcr.io/devcontainers/features/github-cli` feature が、ホストの `gh` CLI 認証情報をもとに **自動的に `GITHUB_TOKEN` を設定する**ため、ユーザーが明示的に設定していなくても競合が発生します
-- `.devcontainer/.env.secrets` に `GITHUB_TOKEN` を設定した場合も同様です
+`ghcr.io/devcontainers/features/github-cli` feature が、ホストの `gh` CLI 認証情報をもとに **自動的に `GITHUB_TOKEN` を設定**します。この `GITHUB_TOKEN` は以下の 2 つの問題を引き起こします：
+
+1. VS Code の Copilot Chat が使う OAuth 認証フローと競合する
+2. `GITHUB_TOKEN` が空文字（`""`）に設定されていると、`gh` CLI が環境変数を優先して保存済みの認証情報を無視するため、`gh auth login` しても認証が通らない
 
 **対策（このテンプレートで実施済み）:**
 
-- `devcontainer.json` の `remoteEnv` で `"GITHUB_TOKEN": ""` を設定し、github-cli feature が注入するトークンを VS Code プロセスから除外しています
+- `devcontainer.json` の `remoteEnv` で `"GITHUB_TOKEN": null` を設定し、github-cli feature が注入するトークンを **unset**（環境変数自体を削除）しています
+  - `""` ではなく `null` を使うことで、`gh` CLI が保存済みの認証情報にフォールバックできるようになります
+- `postCreateCommand` で `GITHUB_PERSONAL_ACCESS_TOKEN` が設定されている場合、`gh auth login --with-token` を自動実行し、`gh` CLI の認証を自動設定します
 - MCP サーバーの認証には `GITHUB_PERSONAL_ACCESS_TOKEN` を使用しています（VS Code の内蔵認証と競合しない名前）
 
 **それでも解決しない場合:**
 
 1. `.devcontainer/.env.secrets` に `GITHUB_TOKEN` が含まれていないか確認してください
 2. VS Code のホスト側で GitHub アカウントにサインインしていることを確認してください（左下のアカウントアイコン → GitHub でサインイン）
-3. DevContainer を **Rebuild** してください（コマンドパレット → `Dev Containers: Rebuild Container`）
+3. `gh` CLI を手動で認証する場合は、デバイスフローを使ってください：
+   ```bash
+   gh auth login -p https -h github.com --web
+   ```
+4. DevContainer を **Rebuild** してください（コマンドパレット → `Dev Containers: Rebuild Container`）
 
 ## ポイント
 
